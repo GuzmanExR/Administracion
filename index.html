@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es-UY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Llamados · Simulador de ecosistema de compras públicas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ══════════════ BARRA SUPERIOR / SELECTOR DE ENTORNO ══════════════ -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-4h6v4"/><path d="M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>
+      <span>Llamados<strong>UY</strong> · Simulador</span>
+    </div>
+
+    <nav class="env-switch" role="tablist" aria-label="Cambiar entorno">
+      <button id="btnEnvPhone" class="env-btn" role="tab" data-env="telefono">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><line x1="11" y1="18.5" x2="13" y2="18.5"/></svg>
+        Teléfono
+      </button>
+      <button id="btnEnvAdmin" class="env-btn" role="tab" data-env="admin">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        Administración
+      </button>
+    </nav>
+
+    <div class="topbar-hint" id="envHint"></div>
+  </header>
+
+  <!-- ══════════════ ENTORNO TELÉFONO ══════════════ -->
+  <main id="viewPhone" class="env env-phone">
+    <div class="phone-stage">
+      <p class="stage-caption">Así recibe la empresa las notificaciones y se postula a los llamados</p>
+
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+
+          <!-- Push notification flotante -->
+          <div id="pushNotif" class="push-notif" hidden>
+            <div class="push-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            </div>
+            <div class="push-body">
+              <div class="push-app">LLAMADO · ahora</div>
+              <div class="push-title" id="pushTitle"></div>
+              <div class="push-text" id="pushText"></div>
+            </div>
+          </div>
+
+          <!-- Barra de estado -->
+          <div class="status-bar">
+            <span id="phoneClock">9:41</span>
+            <span class="status-icons">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M2 17h4v4H2zM8 13h4v8H8zM14 9h4v12h-4zM20 5h4v16h-4z" transform="scale(0.9)"/></svg>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="8" width="18" height="9" rx="2"/><rect x="4" y="10" width="11" height="5" fill="currentColor" stroke="none"/><line x1="22" y1="11" x2="22" y2="14"/></svg>
+            </span>
+          </div>
+
+          <!-- Header de la app -->
+          <div class="app-header">
+            <div>
+              <div class="app-title">Llamados</div>
+              <div class="app-subtitle">Oportunidades para tu empresa</div>
+            </div>
+            <button class="bell-btn" id="bellBtn" title="Notificaciones">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+              <span class="bell-badge" id="bellBadge" hidden></span>
+            </button>
+          </div>
+
+          <!-- Contenido scrolleable de la app -->
+          <div class="app-content" id="phoneContent"></div>
+
+          <!-- Tab bar inferior -->
+          <nav class="tab-bar">
+            <button class="tab-btn" data-tab="llamados">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+              <span>Llamados</span>
+            </button>
+            <button class="tab-btn" data-tab="postulaciones">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>
+              <span>Postulaciones</span>
+            </button>
+            <button class="tab-btn" data-tab="perfil">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Perfil</span>
+            </button>
+          </nav>
+
+          <!-- Hoja de detalle dentro del teléfono -->
+          <div class="phone-sheet" id="phoneSheet" hidden>
+            <div class="sheet-handle"></div>
+            <div class="sheet-content" id="sheetContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ══════════════ ENTORNO ADMINISTRACIÓN ══════════════ -->
+  <main id="viewAdmin" class="env env-admin" hidden>
+    <div class="admin-wrap">
+
+      <div class="admin-header">
+        <div>
+          <h1>Panel de Administración</h1>
+          <p class="admin-sub">Gestión de llamados a empresas · Intendencia / Organismo comprador</p>
+        </div>
+        <div class="admin-actions">
+          <button class="btn btn-ghost" id="btnReset">Restablecer demo</button>
+          <button class="btn btn-primary" id="btnNew">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Publicar llamado
+          </button>
+        </div>
+      </div>
+
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="admin-card">
+        <div class="admin-card-head">
+          <h2>Llamados</h2>
+          <div class="admin-filters" id="adminFilters"></div>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Llamado</th>
+                <th>Rubro</th>
+                <th>Monto est.</th>
+                <th>Fecha límite</th>
+                <th>Estado</th>
+                <th>Postulaciones</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="adminRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer: formulario de llamado -->
+    <div class="drawer-overlay" id="drawerOverlay" hidden>
+      <aside class="drawer" role="dialog" aria-modal="true">
+        <div class="drawer-head">
+          <h2 id="drawerTitle">Publicar llamado</h2>
+          <button class="icon-btn" id="drawerClose" title="Cerrar">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <form id="llamadoForm" class="drawer-body">
+          <label class="field">
+            <span>Título del llamado *</span>
+            <input name="titulo" required maxlength="90" placeholder="Ej.: Compra de juguetes para actividades infantiles">
+          </label>
+          <div class="field-row">
+            <label class="field">
+              <span>Organismo *</span>
+              <input name="organismo" required placeholder="Ej.: Intendencia Departamental de Flores">
+            </label>
+            <label class="field">
+              <span>Rubro *</span>
+              <input name="rubro" required list="rubrosList" placeholder="Ej.: Juguetería / Artículos infantiles">
+              <datalist id="rubrosList"></datalist>
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field">
+              <span>Monto estimado ($U)</span>
+              <input name="monto" type="number" min="0" step="1" placeholder="55000">
+            </label>
+            <label class="field">
+              <span>Fecha límite *</span>
+              <input name="fechaLimite" type="datetime-local" required>
+            </label>
+          </div>
+          <label class="field">
+            <span>Lugar de entrega</span>
+            <input name="lugar" placeholder="Ej.: Trinidad, Flores">
+          </label>
+          <label class="field">
+            <span>Descripción del llamado</span>
+            <textarea name="descripcion" rows="4" placeholder="Objeto de la compra, cantidades, pliegos, condiciones…"></textarea>
+          </label>
+          <div class="field">
+            <span>Requisitos principales</span>
+            <div id="reqList"></div>
+            <button type="button" class="btn btn-ghost btn-sm" id="btnAddReq">+ Agregar requisito</button>
+          </div>
+          <div class="drawer-foot">
+            <button type="button" class="btn btn-ghost" id="btnSaveDraft">Guardar borrador</button>
+            <button type="submit" class="btn btn-primary" id="btnPublish">Publicar ahora</button>
+          </div>
+        </form>
+      </aside>
+    </div>
+
+    <!-- Drawer: postulaciones de un llamado -->
+    <div class="drawer-overlay" id="postOverlay" hidden>
+      <aside class="drawer" role="dialog" aria-modal="true">
+        <div class="drawer-head">
+          <h2 id="postTitle">Postulaciones</h2>
+          <button class="icon-btn" id="postClose" title="Cerrar">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="drawer-body" id="postBody"></div>
+      </aside>
+    </div>
+
+    <!-- Confirmación genérica -->
+    <div class="modal-overlay" id="confirmOverlay" hidden>
+      <div class="modal">
+        <p id="confirmText"></p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="confirmCancel">Cancelar</button>
+          <button class="btn btn-danger" id="confirmOk">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
